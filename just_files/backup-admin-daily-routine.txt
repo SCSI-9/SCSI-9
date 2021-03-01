@@ -1,0 +1,8 @@
+1.Client backups
+2.Storage pool backup
+3.protect container or storage pool / replication to remote site
+4.tsm database backup then prepare tapes for off-site
+5.run data expiration -- to devide a free space for new upcoming data
+6.storage pool migration -- migrate data from upper site in pyramid to lowwer.
+Not recommeded to set up it in automatical mode.Do t manual after workhours
+7.data reclamation

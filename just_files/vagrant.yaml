@@ -1,0 +1,122 @@
+---
+
+- name: Vagrant installatuin process
+  hosts: localhost
+  become: yes
+
+
+  tasks:
+
+  - name: Clean cash
+    shell: yum clean all
+    args:
+      executable: /bin/bash  
+
+    
+
+
+  - name: update repo
+    yum: name=* state=latest
+
+
+  - name: install packages
+    yum: name=gcc name=dkms name=make name=qt name=libgomp name=patch state=latest
+
+
+  - name: install more packages
+    yum: name=kernel-headers name=kernel-devel name=binutils name=glibc-headers name=glibc-devel  state=latest
+
+
+  - name: Download virtualbix repo
+    get_url:
+        url: http://download.virtualbox.org/virtualbox/rpm/rhel/virtualbox.repo
+        dest: /etc/yum.repos.d/
+        mode: 0644
+    register: repooutput
+
+
+  - debug:
+      var: repooutput
+
+
+
+  - name: Install VB
+    yum: name=VirtualBox-5.2 state=latest
+
+
+  - name: check vb
+    shell: which virtualbox
+    args:
+       executable: /bin/bash
+    register: checker
+
+
+  - debug:
+      var: checker
+
+
+
+  - name: Download vagrant
+    get_url:
+        url: https://releases.hashicorp.com/vagrant/2.2.2/vagrant_2.2.2_x86_64.rpm
+        dest: /ansible
+        mode: 0644
+    register: vagrantoutput
+
+
+  - debug:
+      var: vagrantouput
+
+  - name: Install vagrant 
+    yum: name=vagrant_2.2.2_x86_64.rpm  state=installed
+    register: vagrantok
+ 
+  - debug:
+      var: vagrantok
+
+
+  - name: Check vagrant installed
+    shell: vagrant --version
+    args: 
+      executable: /bin/bash
+
+
+
+  - name: Create work dir
+    shell: mkdir /vagrant23
+    args:
+      executable: /bin/bash
+
+
+
+
+  - name: Change work dir
+    shell: cd /vagrant23
+    args:
+      executable: /bin/bash
+   
+
+  - name: Vagrant initialization
+    shell: vagrant init
+    args:
+       executable: /bin/bash
+
+
+  - name: Add ubuntu box
+    shell: vagrant box add ubuntu/focal64
+    args: 
+      executable: /bin/bash
+
+
+  - name: Start Ubuntu
+    shell: vagrant up
+    args:
+       executable: /bin/bash
+
+
+
+ 
+
+ 
+
+
